@@ -2,7 +2,7 @@
   <v-app style="font-family: ProximaNova !important; background-color: #262626">
     <AppBar />
     <v-content>
-      <h1 class="text-center mt-2">Motor de Búsqueda Vectorial</h1>
+      <h1 class="text-center mt-5">Motor de Búsqueda Vectorial</h1>
       <Buscar />
     </v-content>
     <Footer />

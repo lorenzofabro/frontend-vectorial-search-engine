@@ -14,6 +14,7 @@
           clearable
           label="Buscar"
           color="white"
+          @click:clear="documentos = []"
         ></v-text-field>
       </v-col>
       <v-col cols="2"
