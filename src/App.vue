@@ -1,32 +1,35 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app style="font-family: ProximaNova !important; background-color: #262626">
+    <AppBar />
+    <v-content>
+      <h1 class="text-center mt-2">Motor de Búsqueda</h1>
+      <Buscar />
+    </v-content>
+  </v-app>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+@font-face {
+  font-family: "ProximaNova";
+  src: url("~@/assets/ProximaNova-Regular.otf");
 }
 </style>
+
+<script>
+import AppBar from "./components/AppBar";
+import Buscar from "./views/Buscar";
+
+export default {
+  name: "App",
+
+  components: { AppBar, Buscar },
+
+  data: () => ({
+    //
+  }),
+
+  created() {
+    this.$vuetify.theme.dark = true;
+  },
+};
+</script>
