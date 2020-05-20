@@ -1,6 +1,12 @@
 <template>
   <v-content class="py-2">
-    <v-row>
+    <v-snackbar v-model="snackbar" top color="#407537">
+      {{ snackbarText }}
+      <v-btn color="white" text @click="snackbar = false">
+        Cerrar
+      </v-btn>
+    </v-snackbar>
+    <v-row class="mt-3">
       <v-col cols="6" offset="3">
         <v-text-field
           outlined
@@ -33,14 +39,16 @@
 export default {
   data() {
     return {
+      snackbar: false,
+      snackbarText: "",
       palabras: "",
       headers: [
         {
-          text: "Ranking",
+          text: "Ranking 🏅",
           align: "start",
           value: "ranking",
         },
-        { text: "Documento", value: "documento.nombre" },
+        { text: "Documento 📁", value: "documento.nombre" },
       ],
       documentos: [],
     };
@@ -54,6 +62,9 @@ export default {
         .then((res) => {
           console.log(res);
           this.documentos = res.data.data.documentos;
+          this.snackbar = true;
+          this.snackbarText =
+            "Búsqueda realizada con éxito, mira los resultados abajo 👇";
         })
         .catch((e) => {
           console.error(e);
