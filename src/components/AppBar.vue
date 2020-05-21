@@ -14,7 +14,12 @@
 
     <!-- Documentos Indexados-->
 
-    <v-badge bordered color="error" overlap :content="cantidadDocumentos">
+    <v-badge
+      bordered
+      color="error"
+      overlap
+      :content="documentosIndexados.length"
+    >
       <v-btn text @click="dialog = true"
         ><v-icon class="mr-2">mdi-file-multiple</v-icon>Ver documentos
         indexados</v-btn
@@ -70,7 +75,6 @@ export default {
       progress: false,
       snackbar: false,
       snackbarText: "",
-      cantidadDocumentos: "",
       documentosIndexados: [],
     };
   },
@@ -115,15 +119,16 @@ export default {
             "El archivo es más grande de lo esperado, por favor mirá la consola del servidor para chequear el estado de la indexación 🙏";
           this.progress = false;
         });
-      this.cantidadDocumentos++;
+      this.documentosIndexados.push({
+        nombre: nombre,
+        url: `documentos/${nombre}`,
+      });
     },
     getDocumentos() {
       this.axios
         .get("api/documentos/todos")
         .then((res) => {
-          console.log(res);
           this.documentosIndexados = res.data.data.documentos;
-          this.cantidadDocumentos = this.documentosIndexados.length;
         })
         .catch((e) => {
           console.error(e);

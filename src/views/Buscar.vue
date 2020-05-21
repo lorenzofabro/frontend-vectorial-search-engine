@@ -61,7 +61,6 @@ export default {
           params: this.axiosParams,
         })
         .then((res) => {
-          console.log(res);
           this.documentos = res.data.data.documentos;
           this.snackbar = true;
           this.snackbarText =
