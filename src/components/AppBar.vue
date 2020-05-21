@@ -11,8 +11,40 @@
       <v-toolbar-title>DLC</v-toolbar-title>
     </div>
     <v-spacer></v-spacer>
-    <v-btn text for="uploadImage" tag="label" id="labelUploadImage"
-      ><v-icon class="mr-2">mdi-file</v-icon>Indexar Documento</v-btn
+
+    <!-- Documentos Indexados-->
+
+    <v-badge bordered color="error" overlap :content="cantidadDocumentos">
+      <v-btn text @click="dialog = true"
+        ><v-icon class="mr-2">mdi-file-multiple</v-icon>Ver documentos
+        indexados</v-btn
+      >
+    </v-badge>
+    <v-dialog v-model="dialog" width="1024">
+      <v-card>
+        <v-btn text v-for="(doc, ind) in documentosIndexados" v-bind:key="ind">
+          <v-icon class="mr-2" size="small">mdi-file-outline</v-icon>
+          {{ doc.nombre }}
+        </v-btn>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="white" text @click="dialog = false">
+            Cerrar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Indexar Documento-->
+    <v-btn
+      text
+      for="uploadImage"
+      tag="label"
+      id="labelUploadImage"
+      class="ml-9"
+    >
+      <v-icon class="mr-2">mdi-file-cog</v-icon>Indexar Documento</v-btn
     >
     <input type="file" @change="onChange" id="uploadImage" class="d-none" />
     <v-progress-circular
@@ -34,10 +66,16 @@ import qs from "qs";
 export default {
   data() {
     return {
+      dialog: false,
       progress: false,
       snackbar: false,
       snackbarText: "",
+      cantidadDocumentos: "",
+      documentosIndexados: [],
     };
+  },
+  created() {
+    this.getDocumentos();
   },
   methods: {
     async onChange(e) {
@@ -76,6 +114,19 @@ export default {
           this.snackbarText =
             "El archivo es más grande de lo esperado, por favor mirá la consola del servidor para chequear el estado de la indexación 🙏";
           this.progress = false;
+        });
+      this.cantidadDocumentos++;
+    },
+    getDocumentos() {
+      this.axios
+        .get("api/documentos/todos")
+        .then((res) => {
+          console.log(res);
+          this.documentosIndexados = res.data.data.documentos;
+          this.cantidadDocumentos = this.documentosIndexados.length;
+        })
+        .catch((e) => {
+          console.error(e);
         });
     },
   },
