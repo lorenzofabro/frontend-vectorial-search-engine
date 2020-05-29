@@ -5,4 +5,8 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
-export { toBase64 }
+const truncate = num => {
+    return num.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+}
+
+export { toBase64, truncate }

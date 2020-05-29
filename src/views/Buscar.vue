@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { truncate } from "../scripts";
 export default {
   data() {
     return {
@@ -50,6 +51,7 @@ export default {
           value: "ranking",
         },
         { text: "Documento 📁", value: "documento.nombre" },
+        { text: "Peso 🏋", value: "documento.peso" },
       ],
       documentos: [],
     };
