@@ -41,14 +41,41 @@
       </v-card>
     </v-dialog>
 
-    <!-- Indexar Documento-->
-    <v-btn
-      text
-      for="uploadImage"
-      tag="label"
-      id="labelUploadImage"
-      class="ml-9"
+    <!-- Indexar Carpeta -->
+    <v-btn text @click="confirmActionDialog = true" class="ml-9">
+      <v-icon class="mr-2">mdi-folder</v-icon>Indexar carpeta</v-btn
     >
+    <v-dialog v-model="confirmActionDialog" max-width="600px">
+      <v-card>
+        <v-card-title
+          style="background-color: #ba0737;font-family: ProximaNova !important"
+          class="title text-uppercase font-weight-bold white--text mb-3"
+          >Indexar Carpeta
+        </v-card-title>
+        <v-card-text>
+          ¿Esta seguro que desea continuar?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="success"
+            text
+            class="mr-0 mr-md-2"
+            @click="
+              indexarCarpeta();
+              confirmActionDialog = false;
+            "
+          >
+            Si
+          </v-btn>
+          <v-btn color="error" text @click="confirmActionDialog = false">
+            No
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- Indexar Documento-->
+    <v-btn text for="uploadImage" tag="label" id="labelUploadImage" class="">
       <v-icon class="mr-2">mdi-file-cog</v-icon>Indexar Documento</v-btn
     >
     <input type="file" @change="onChange" id="uploadImage" class="d-none" />
@@ -72,6 +99,7 @@ export default {
   data() {
     return {
       dialog: false,
+      confirmActionDialog: false,
       progress: false,
       snackbar: false,
       snackbarText: "",
@@ -105,7 +133,7 @@ export default {
       };
 
       this.axios
-        .post("api/documentos/indexar", qs.stringify(body), requestOptions)
+        .post("api/documentos/indexar/bulk", qs.stringify(body), requestOptions)
         .then((res) => {
           console.log(res);
           this.snackbar = true;
@@ -132,6 +160,24 @@ export default {
         })
         .catch((e) => {
           console.error(e);
+        });
+    },
+    indexarCarpeta() {
+      this.progress = true;
+      this.axios
+        .post("api/documentos/indexar/carpeta")
+        .then((res) => {
+          console.log(res);
+          this.snackbar = true;
+          this.snackbarText = "Documento indexado exitosamente 😄";
+          this.progress = false;
+        })
+        .catch((e) => {
+          console.error(e);
+          this.snackbar = true;
+          this.snackbarText =
+            "Por favor mirá la consola del servidor para chequear el estado de la indexación 🙏";
+          this.progress = false;
         });
     },
   },
